@@ -172,5 +172,6 @@
     <orderEntry type="library" name="Maven: jline:jline:2.11" level="project" />
     <orderEntry type="library" name="Maven: org.mortbay.jetty:jetty:6.1.26.cloudera.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hadoop:hadoop-yarn-client:2.6.0-cdh5.9.0" level="project" />
+    <orderEntry type="library" name="scala-sdk-2.10.4" level="project" />
   </component>
 </module>
