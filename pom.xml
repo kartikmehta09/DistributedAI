@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>joey.project</groupId>
     <artifactId>DistributedAI</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <repositories>
@@ -20,10 +21,29 @@
     </repositories>
 
     <modules>
-        <module>deepst</module>
+        <module>distributed-dl</module>
+        <module>datastruc</module>
+        <module>distributed-ml</module>
+        <module>core</module>
     </modules>
 
     <properties>
+        <PermGen>64m</PermGen>
+        <MaxPermGen>512m</MaxPermGen>
+        <CodeCacheSize>512m</CodeCacheSize>
+
+        <java.version>1.8</java.version>
+        <scala.version>2.10.5</scala.version>
+        <akka.version>2.3.14</akka.version>
+        <scala.binary.version>2.10</scala.binary.version>
+
+        <hive.version>1.1.0</hive.version>
+        <hbase.version>1.2.0</hbase.version>
+        <spark.version>1.6.0</spark.version>
+        <hadoop.version>2.6.0</hadoop.version>
+        <mathout.version>0.9</mathout.version>
+        <zookeeper.version>3.4.5</zookeeper.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <scala.version>2.10.4</scala.version>
         <zookeeper.version>3.4.5</zookeeper.version>
@@ -173,4 +193,125 @@
         </dependency>
     </dependencies>
 
+    <build>
+
+        <pluginManagement>
+            <plugins>
+
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>3.2.2</version>
+                    <executions>
+                        <execution>
+                            <id>eclipse-add-source</id>
+                            <goals>
+                                <goal>add-source</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>scala-compile-first</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                        <!--
+                         <execution>
+                          <id>scala-test-compile-first</id>
+                          <phase>process-test-resources</phase>
+                          <goals>
+                            <goal>testCompile</goal>
+                          </goals>
+                        </execution>
+
+                        <execution>
+                          <id>attach-scaladocs</id>
+                          <phase>verify</phase>
+                          <goals>
+                            <goal>doc-jar</goal>
+                          </goals>
+                        </execution>
+                        -->
+                    </executions>
+                    <configuration>
+                        <scalaVersion>${scala.version}</scalaVersion>
+                        <recompileMode>incremental</recompileMode>
+                        <encoding>UTF-8</encoding>
+                        <args>
+                            <arg>-unchecked</arg>
+                            <arg>-deprecation</arg>
+                            <arg>-feature</arg>
+                        </args>
+                        <jvmArgs>
+                            <jvmArg>-Xms1024m</jvmArg>
+                            <jvmArg>-Xmx1024m</jvmArg>
+                            <jvmArg>-XX:PermSize=${PermGen}</jvmArg>
+                            <jvmArg>-XX:MaxPermSize=${MaxPermGen}</jvmArg>
+                            <jvmArg>-XX:ReservedCodeCacheSize=${CodeCacheSize}</jvmArg>
+                        </jvmArgs>
+                        <javacArgs>
+                            <javacArg>-source</javacArg>
+                            <javacArg>${java.version}</javacArg>
+                            <javacArg>-target</javacArg>
+                            <javacArg>${java.version}</javacArg>
+                            <javacArg>-encoding</javacArg>
+                            <javacArg>UTF-8</javacArg>
+                        </javacArgs>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.8</version>
+                    <executions>
+                        <execution>
+                            <id>copy</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>
+                                    ${project.build.directory}/jars
+                                </outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <!--
+                    <configuration>
+                      <excludeGroupIds>org.apache.spark,org.apache.hbase,org.apache.hadoop,org.apache.zookeeper,org.apache.flume,org.apache.hive</excludeGroupIds>
+                    </configuration>
+                    -->
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <maxmem>1024m</maxmem>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>
